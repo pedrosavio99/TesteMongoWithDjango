@@ -16,11 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from authusers.views import cadastro, listar_usuarios, login
 from demoapp.views import adicionar_tarefa, listar_tarefas
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cadastrar/', adicionar_tarefa, name='cadastrar'),
     path('listar/', listar_tarefas, name='listar'),
+    path('login/', login, name='login'),
+    path('cadastro/', cadastro, name='cadastro'),
+    path('listarusers/', listar_usuarios, name='listar_usuarios'),
     # path('demoapp/', include('demoapp.urls')), # Adiciona as URLs do app demoapp
 ]
