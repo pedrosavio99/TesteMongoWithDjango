@@ -15,7 +15,7 @@ def login(request):
         matricula = data.get('matricula')
         senha = data.get('senha')
         user = get_object_or_404(User, matricula=matricula, senha=senha)
-        return JsonResponse({'message': 'Login realizado com sucesso!', 'matricula': user.matricula})
+        return JsonResponse({'message': 'Login realizado com sucesso!', 'matricula': user.matricula, "name": user.name})
     return JsonResponse({'message': 'Método inválido! Use POST para login.'}, status=400)
 
 @csrf_exempt
@@ -23,11 +23,12 @@ def cadastro(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         matricula = data.get('matricula')
+        name = data.get('name')
         senha = data.get('senha')
         if len(matricula) == 4 and len(senha) == 4:
-            user, created = User.objects.get_or_create(matricula=matricula, senha=senha)
+            user, created = User.objects.get_or_create(matricula=matricula, senha=senha, name=name)
             if created:
-                return JsonResponse({'message': 'Cadastro realizado com sucesso!', 'matricula': user.matricula})
+                return JsonResponse({'message': 'Cadastro realizado com sucesso!', 'matricula': user.matricula, 'name': user.name})
             else:
                 return JsonResponse({'message': 'Usuário já cadastrado!'}, status=400)
         else:
@@ -36,5 +37,5 @@ def cadastro(request):
 
 def listar_usuarios(request):
     users = User.objects.all()
-    data = [{'matricula': user.matricula} for user in users]
+    data = [{'matricula': user.matricula, 'name': user.name} for user in users]
     return JsonResponse(data, safe=False)
