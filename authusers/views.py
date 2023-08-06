@@ -15,7 +15,7 @@ def login(request):
         matricula = data.get('matricula')
         senha = data.get('senha')
         user = get_object_or_404(User, matricula=matricula, senha=senha)
-        return JsonResponse({'message': 'Login realizado com sucesso!', 'matricula': user.matricula, "name": user.name})
+        return JsonResponse({'message': 'Login realizado com sucesso!', 'matricula': user.matricula, "name": user.name, "role": user.role})
     return JsonResponse({'message': 'Método inválido! Use POST para login.'}, status=400)
 
 @csrf_exempt
