@@ -42,3 +42,16 @@ def listar_usuarios(request):
     users = User.objects.all()
     data = [{'matricula': user.matricula, 'name': user.name, "role": user.role} for user in users]
     return JsonResponse(data, safe=False)
+
+
+def deletar_usuario(request, matricula):
+    if request.method == 'DELETE':
+        user = User.objects.filter(matricula=matricula).first()
+
+        if user:
+            user.delete()
+            return JsonResponse({'message': f'Usuário com matrícula {matricula} foi deletado com sucesso.'}, status=200)
+        else:
+            return JsonResponse({'message': f'Usuário com matrícula {matricula} não foi encontrado.'}, status=404)
+
+    return JsonResponse({'message': 'Metodo invalido! Use DELETE para deletar um usuario.'}, status=400)
