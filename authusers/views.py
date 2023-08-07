@@ -43,7 +43,7 @@ def listar_usuarios(request):
     data = [{'matricula': user.matricula, 'name': user.name, "role": user.role} for user in users]
     return JsonResponse(data, safe=False)
 
-
+@csrf_exempt
 def deletar_usuario(request, matricula):
     if request.method == 'DELETE':
         user = User.objects.filter(matricula=matricula).first()
