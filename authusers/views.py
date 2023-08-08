@@ -1,6 +1,5 @@
 import json
 
-from django.db import DatabaseError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
@@ -74,7 +73,7 @@ def alterar_papel(request, matricula):
                     return JsonResponse({'message': f'Usuário com matrícula {matricula} não é nem adm nem tec.'}, status=400)
             else:
                 return JsonResponse({'message': f'Usuário com matrícula {matricula} não foi encontrado.'}, status=404)
-        except DatabaseError as e:
+        except:
             return JsonResponse({'message': 'Erro ao alterar o papel do usuário.'}, status=500)
 
     return JsonResponse({'message': 'Método inválido! Use PUT para alterar o papel de um usuário.'}, status=400)
