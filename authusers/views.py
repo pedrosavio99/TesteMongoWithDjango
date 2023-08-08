@@ -55,6 +55,7 @@ def deletar_usuario(request, matricula):
 
     return JsonResponse({'message': 'Metodo invalido! Use DELETE para deletar um usuario.'}, status=400)
 
+@csrf_exempt
 def alterar_papel(request, matricula):
     if request.method == 'PUT':
         try:
