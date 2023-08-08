@@ -1,7 +1,6 @@
 import json
 
 from django.http import JsonResponse
-# Create your views here.
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -55,3 +54,25 @@ def deletar_usuario(request, matricula):
             return JsonResponse({'message': f'Usuário com matrícula {matricula} não foi encontrado.'}, status=404)
 
     return JsonResponse({'message': 'Metodo invalido! Use DELETE para deletar um usuario.'}, status=400)
+
+@csrf_exempt
+def alterar_papel(request, matricula):
+    if request.method == 'PUT':
+        user = User.objects.filter(matricula=matricula).first()
+
+        if user:
+            if user.role == 'adm':
+                user.role = 'tec'
+                user.save()
+                return JsonResponse({'message': f'Papel do usuário com matrícula {matricula} foi alterado para tec.'}, status=200)
+            elif user.role == 'tec':
+                user.role = 'adm'
+                user.save()
+                return JsonResponse({'message': f'Papel do usuário com matrícula {matricula} foi alterado para adm.'}, status=200)
+            else:
+                return JsonResponse({'message': f'Usuário com matrícula {matricula} não é nem adm nem tec.'}, status=400)
+        else:
+            return JsonResponse({'message': f'Usuário com matrícula {matricula} não foi encontrado.'}, status=404)
+
+    return JsonResponse({'message': 'Método inválido! Use PUT para alterar o papel de um usuário.'}, status=400)
+
