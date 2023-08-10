@@ -6,15 +6,17 @@ from demoapp.models import Todo
 
 from .serializers import TaskSerializer
 
-# {
-#     "title": "Minha Nova Tarefa",
-#     "description": "Esta é a descrição da minha nova tarefa.",
-#     "status": "aberta",
-#     "assignees": "Usuário A, Usuário B",
-#     "assigner": "3333",
-#     "created_at": "2023-07-19T10:00:00Z",
-#     "updated_at": "2023-07-19T10:00:00Z"
-# }
+
+@api_view(['DELETE'])
+def deletar_tarefa(request, tarefa_id):
+    try:
+        tarefa = Todo.objects.get(pk=tarefa_id)
+    except Todo.DoesNotExist:
+        return Response({'message': 'Tarefa não encontrada.'},status=404)
+
+    tarefa.delete()
+    return Response({'message': 'Tarefa deletada com sucesso.'}, status=200)
+
 
 @api_view(['POST'])
 def adicionar_tarefa(request):

@@ -3,12 +3,13 @@ from django.urls import include, path
 
 from authusers.views import (alterar_papel, cadastro, deletar_usuario,
                              listar_usuarios, login)
-from demoapp.views import adicionar_tarefa, listar_tarefas
+from demoapp.views import adicionar_tarefa, deletar_tarefa, listar_tarefas
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cadastrar/', adicionar_tarefa, name='cadastrar'),
     path('listar/', listar_tarefas, name='listar'),
+    path('deletar-tarefa/<int:tarefa_id>/', deletar_tarefa, name='deletar_tarefa'),
     path('login/', login, name='login'),
     path('cadastro/', cadastro, name='cadastro'),
     path('listarusers/', listar_usuarios, name='listar_usuarios'),
