@@ -7,6 +7,39 @@ from demoapp.models import Todo
 from .serializers import TaskSerializer
 
 
+@api_view(['PUT'])
+def atualizar_assignees_tarefa(request, tarefa_id):
+    try:
+        tarefa = Todo.objects.get(pk=tarefa_id)
+    except Todo.DoesNotExist:
+        return Response({'message': 'Tarefa não encontrada.'}, status=404)
+
+    # Verifica se o campo 'assignees' está presente nos dados da requisição
+    if 'assignees' in request.data:
+        tarefa.assignees = request.data['assignees']
+        tarefa.save()
+
+        return Response({'message': 'Assignees da tarefa atualizado com sucesso.'}, status=200)
+    else:
+        return Response({'message': 'Dados insuficientes para atualizar o assignees.'}, status=400)
+
+
+@api_view(['PUT'])
+def mudar_status_tarefa(request, tarefa_id):
+    try:
+        tarefa = Todo.objects.get(pk=tarefa_id)
+    except Todo.DoesNotExist:
+        return Response({'message': 'Tarefa não encontrada.'}, status=404)
+
+    novo_status = request.data.get('status')
+    if novo_status and novo_status in [choice[0] for choice in Todo.STATUS_CHOICES]:
+        tarefa.status = novo_status
+        tarefa.save()
+        return Response({'message': 'Status da tarefa atualizado com sucesso.'}, status=200)
+    else:
+        return Response({'message': 'Status inválido.'}, status=400)
+
+
 @api_view(['DELETE'])
 def deletar_tarefa(request, tarefa_id):
     try:
