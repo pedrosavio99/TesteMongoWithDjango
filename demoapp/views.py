@@ -21,6 +21,7 @@ def deletar_tarefa(request, tarefa_id):
 @api_view(['POST'])
 def adicionar_tarefa(request):
     title = request.data["title"]
+    status = request.data["status"]
     description = request.data["description"]
     assignee_matricula = request.data["assigner"] 
     assignees = request.data["assignees"]  
@@ -35,6 +36,7 @@ def adicionar_tarefa(request):
     serializer = TaskSerializer(data={
         'title': title,
         'description': description,
+        "status" : status,
         'assigner': assigner.name, 
         'assignees': assignees,
         "created_at": created_at, 
