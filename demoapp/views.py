@@ -8,6 +8,22 @@ from .serializers import TaskSerializer
 
 
 @api_view(['PUT'])
+def atualizar_updated_at_tarefa(request, tarefa_id):
+    try:
+        tarefa = Todo.objects.get(pk=tarefa_id)
+    except Todo.DoesNotExist:
+        return Response({'message': 'Tarefa não encontrada.'}, status=404)
+
+    if 'updated_at' in request.data:
+        tarefa.updated_at = request.data['updated_at']
+        tarefa.save()
+
+        return Response({'message': 'updated_at da tarefa atualizado com sucesso.'}, status=200)
+    else:
+        return Response({'message': 'Dados insuficientes para atualizar o updated_at.'}, status=400)
+
+
+@api_view(['PUT'])
 def atualizar_assignees_tarefa(request, tarefa_id):
     try:
         tarefa = Todo.objects.get(pk=tarefa_id)
