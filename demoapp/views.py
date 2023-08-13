@@ -1,3 +1,5 @@
+import pandas as pd
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -5,6 +7,30 @@ from authusers.models import User
 from demoapp.models import Todo
 
 from .serializers import TaskSerializer
+
+
+def export_todos_finalizados(request):
+    try:
+        # Filtra todos os todos com o status 'finalizada'
+        todos_finalizados = Todo.objects.filter(status='finalizada')
+
+        # Crie um DataFrame do pandas com os dados filtrados
+        df = pd.DataFrame(list(todos_finalizados.values()))
+
+        # Determine o formato da planilha (CSV)
+        file_format = 'csv'
+
+        # Crie uma resposta HTTP com o conteúdo da planilha exportada
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="todos_finalizados.{file_format}"'
+
+        # Exporte o DataFrame para o formato de planilha (CSV)
+        df.to_csv(response, index=False)
+
+        return response
+
+    except Todo.DoesNotExist:
+        return HttpResponse('Não há todos com status "finalizada" para exportar.', status=404)
 
 
 @api_view(['PUT'])
