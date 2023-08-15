@@ -9,6 +9,21 @@ from demoapp.models import Todo
 from .serializers import TaskSerializer
 
 
+@api_view(['DELETE'])
+def excluir_todos_finalizados(request):
+    try:
+        # Filtra todos os todos com o status 'finalizada'
+        todos_finalizados = Todo.objects.filter(status='finalizada')
+
+        # Exclua todos os todos com o status 'finalizada'
+        todos_finalizados.delete()
+
+        return Response({'message': 'Todos os todos com status "finalizada" foram excluídos com sucesso.'}, status=200)
+
+    except Todo.DoesNotExist:
+        return Response({'message': 'Não há todos com status "finalizada" para excluir.'}, status=404)
+
+
 def export_todos_finalizados(request):
     try:
         # Filtra todos os todos com o status 'finalizada'
