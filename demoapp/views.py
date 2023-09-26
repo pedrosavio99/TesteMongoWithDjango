@@ -89,8 +89,11 @@ def mudar_status_tarefa(request, tarefa_id):
         return Response({'message': 'Tarefa não encontrada.'}, status=404)
 
     novo_status = request.data.get('status')
+    comentariofinal = request.data.get('comentariofinal', '')  # Adicione esta linha para obter o valor de "comentariofinal" do request
+
     if novo_status and novo_status in [choice[0] for choice in Todo.STATUS_CHOICES]:
         tarefa.status = novo_status
+        tarefa.comentariofinal = comentariofinal  # Atualize o campo "comentariofinal" com o valor do request
         tarefa.save()
         return Response({'message': 'Status da tarefa atualizado com sucesso.'}, status=200)
     else:
@@ -116,10 +119,11 @@ def adicionar_tarefa(request):
     assignee_matricula = request.data["assigner"] 
     assignees = request.data["assignees"]  
     created_at = request.data["created_at"]  
-    updated_at = request.data["updated_at"]  
+    updated_at = request.data["updated_at"]
+    comentariofinal = request.data["comentariofinal"]
 
     try:
-        assigner = User.objects.get(matricula=assignee_matricula, role='adm')  # Filtrar pelo papel de 'adm'
+        assigner = User.objects.get(matricula=assignee_matricula, role='adm')
     except User.DoesNotExist:
         return Response({'message': 'Usuário atribuidor não encontrado ou não é um administrador.'}, status=400)
 
@@ -130,13 +134,15 @@ def adicionar_tarefa(request):
         'assigner': assigner.name, 
         'assignees': assignees,
         "created_at": created_at, 
-        "updated_at": updated_at
+        "updated_at": updated_at,
+        "comentariofinal": comentariofinal  # Adicione o campo "comentariofinal" ao dicionário de dados do serializer
     })
 
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
 
 @api_view(['GET'])
 def listar_tarefas(request):
