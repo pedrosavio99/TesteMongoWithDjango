@@ -117,7 +117,8 @@ def adicionar_tarefa(request):
     status = request.data["status"]
     description = request.data["description"]
     assignee_matricula = request.data["assigner"] 
-    assignees = request.data["assignees"]  
+    # assignees = request.data["assignees"]  
+    assignees = request.data.get("assignees", [])
     created_at = request.data["created_at"]  
     updated_at = request.data["updated_at"]
     comentariofinal = request.data["comentariofinal"]
@@ -132,10 +133,10 @@ def adicionar_tarefa(request):
         'description': description,
         "status" : status,
         'assigner': assigner.name, 
-        'assignees': assignees,
+        'assignees': str(assignees),
         "created_at": created_at, 
         "updated_at": updated_at,
-        "comentariofinal": comentariofinal  # Adicione o campo "comentariofinal" ao dicionário de dados do serializer
+        "comentariofinal": comentariofinal
     })
 
     if serializer.is_valid():
@@ -149,3 +150,15 @@ def listar_tarefas(request):
     tarefas = Todo.objects.all()
     serializer = TaskSerializer(tarefas, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def listar_tarefas_listas(request):
+    # Obtenha a lista de strings a partir dos parâmetros da solicitação GET
+    search_strings = request.GET.getlist('search_strings[]', [])
+
+    # Filtra as tarefas com base nas strings de pesquisa
+    tarefas = Todo.objects.filter(assignees__overlap=search_strings)
+
+    serializer = TaskSerializer(tarefas, many=True)
+    return Response(serializer.data, status=200)
