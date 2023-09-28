@@ -122,6 +122,7 @@ def adicionar_tarefa(request):
     created_at = request.data["created_at"]  
     updated_at = request.data["updated_at"]
     comentariofinal = request.data["comentariofinal"]
+    pausado = request.data["pausado"]
 
     try:
         assigner = User.objects.get(matricula=assignee_matricula, role='adm')
@@ -136,7 +137,8 @@ def adicionar_tarefa(request):
         'assignees': str(assignees),
         "created_at": created_at, 
         "updated_at": updated_at,
-        "comentariofinal": comentariofinal
+        "comentariofinal": comentariofinal,
+        "pausado": pausado,
     })
 
     if serializer.is_valid():
