@@ -18,6 +18,7 @@ class Todo(models.Model):
     created_at = models.CharField(max_length=200, blank=True)
     updated_at = models.CharField(max_length=200, blank=True)
     comentariofinal = models.CharField(max_length=200, blank=True)
+    pausado = models.BooleanField(blank=True)
 
     def __str__(self):
         return self.title
