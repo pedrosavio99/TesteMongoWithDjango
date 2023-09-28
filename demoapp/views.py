@@ -164,3 +164,20 @@ def listar_tarefas_listas(request):
 
     serializer = TaskSerializer(tarefas, many=True)
     return Response(serializer.data, status=200)
+
+
+@api_view(['PUT'])
+def mudar_pausado_tarefa(request, tarefa_id):
+    try:
+        tarefa = Todo.objects.get(pk=tarefa_id)
+    except Todo.DoesNotExist:
+        return Response({'message': 'Tarefa não encontrada.'}, status=404)
+
+    novo_pausado = request.data.get('pausado')
+
+    if novo_pausado is not None:
+        tarefa.pausado = novo_pausado  # Atualize o campo "pausado" com o valor do request
+        tarefa.save()
+        return Response({'message': 'Propriedade "pausado" da tarefa atualizada com sucesso.'}, status=200)
+    else:
+        return Response({'message': 'Valor de "pausado" inválido.'}, status=400)

@@ -6,7 +6,8 @@ from authusers.views import (alterar_papel, cadastro, deletar_usuario,
 from demoapp.views import (adicionar_tarefa, atualizar_assignees_tarefa,
                            atualizar_updated_at_tarefa, deletar_tarefa,
                            excluir_todos_finalizados, export_todos_finalizados,
-                           listar_tarefas, mudar_status_tarefa)
+                           listar_tarefas, mudar_pausado_tarefa,
+                           mudar_status_tarefa)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,6 +20,7 @@ urlpatterns = [
     path('usuarios/<str:matricula>/', deletar_usuario, name='deletar_usuario'),
     path('usuarios/<str:matricula>/alterar-papel/', alterar_papel, name='alterar_papel'),
     path('mudar-status-tarefa/<int:tarefa_id>/', mudar_status_tarefa, name='mudar_status_tarefa'),
+    path('mudar-pausado-tarefa/<int:tarefa_id>/', mudar_pausado_tarefa, name='mudar_pausado_tarefa'),
     path('atualizar-assignees-tarefa/<int:tarefa_id>/', atualizar_assignees_tarefa, name='atualizar_assignees_tarefa'),
     path('atualizar-updated-at-tarefa/<int:tarefa_id>/', atualizar_updated_at_tarefa, name='atualizar_updated_at_tarefa'),
     path('export-todos-finalizados/', export_todos_finalizados, name='export_todos_finalizados'),
