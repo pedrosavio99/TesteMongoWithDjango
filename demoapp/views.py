@@ -181,3 +181,34 @@ def mudar_pausado_tarefa(request, tarefa_id):
         return Response({'message': 'Propriedade "pausado" da tarefa atualizada com sucesso.'}, status=200)
     else:
         return Response({'message': 'Valor de "pausado" inválido.'}, status=400)
+    
+@api_view(['POST'])
+def adicionar_tarefa_paused(request):
+    title = request.data["title"]
+    status = request.data["status"]
+    description = request.data["description"]
+    # assignee_matricula = request.data["assigner"] 
+    assigner = request.data["assigner"]  
+    assignees = request.data.get("assignees", [])
+    created_at = request.data["created_at"]  
+    updated_at = request.data["updated_at"]
+    comentariofinal = request.data["comentariofinal"]
+    pausado = request.data["pausado"]
+
+
+    serializer = TaskSerializer(data={
+        'title': title,
+        'description': description,
+        "status" : status,
+        'assigner': assigner, 
+        'assignees': str(assignees),
+        "created_at": created_at, 
+        "updated_at": updated_at,
+        "comentariofinal": comentariofinal,
+        "pausado": pausado,
+    })
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)

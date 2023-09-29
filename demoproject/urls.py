@@ -3,7 +3,8 @@ from django.urls import include, path
 
 from authusers.views import (alterar_papel, cadastro, deletar_usuario,
                              listar_usuarios, login)
-from demoapp.views import (adicionar_tarefa, atualizar_assignees_tarefa,
+from demoapp.views import (adicionar_tarefa, adicionar_tarefa_paused,
+                           atualizar_assignees_tarefa,
                            atualizar_updated_at_tarefa, deletar_tarefa,
                            excluir_todos_finalizados, export_todos_finalizados,
                            listar_tarefas, mudar_pausado_tarefa,
@@ -12,6 +13,7 @@ from demoapp.views import (adicionar_tarefa, atualizar_assignees_tarefa,
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cadastrar/', adicionar_tarefa, name='cadastrar'),
+    path('cadastrar_pausado/', adicionar_tarefa_paused, name='cadastrar_pausado'),
     path('listar/', listar_tarefas, name='listar'),
     path('deletar-tarefa/<int:tarefa_id>/', deletar_tarefa, name='deletar_tarefa'),
     path('login/', login, name='login'),
