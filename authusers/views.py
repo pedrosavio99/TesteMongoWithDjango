@@ -26,6 +26,10 @@ def cadastro(request):
         senha = data.get('senha')
         role = data.get('role', 'tec')  # Define 'tec' como valor padrão caso 'role' não esteja presente
 
+        # Verifica se a matrícula já existe
+        if User.objects.filter(matricula=matricula).exists():
+            return JsonResponse({'message': 'Matrícula já cadastrada!'}, status=400)
+
         if len(matricula) == 6 and len(senha) == 4:
             user, created = User.objects.get_or_create(matricula=matricula, senha=senha, name=name, role=role)
             if created:
