@@ -26,14 +26,14 @@ def cadastro(request):
         senha = data.get('senha')
         role = data.get('role', 'tec')  # Define 'tec' como valor padrão caso 'role' não esteja presente
 
-        if len(matricula) == 4 and len(senha) == 4:
+        if len(matricula) == 6 and len(senha) == 4:
             user, created = User.objects.get_or_create(matricula=matricula, senha=senha, name=name, role=role)
             if created:
                 return JsonResponse({'message': 'Cadastro realizado com sucesso!', 'matricula': user.matricula, 'name': user.name, 'role': user.role})
             else:
                 return JsonResponse({'message': 'Usuário já cadastrado!'}, status=400)
         else:
-            return JsonResponse({'message': 'Matrícula e senha devem ter 4 dígitos!'}, status=400)
+            return JsonResponse({'message': 'Matrícula e senha devem ter 6 dígitos!'}, status=400)
     return JsonResponse({'message': 'Método inválido! Use POST para cadastro.'}, status=400)
 
 

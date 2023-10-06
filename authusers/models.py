@@ -9,7 +9,7 @@ class User(models.Model):
         ('tec', 'Técnico'),
     ]
 
-    matricula = models.CharField(max_length=4, unique=True)
+    matricula = models.CharField(max_length=6, unique=True)
     name = models.CharField(max_length=60)
     senha = models.CharField(max_length=4)
     role = models.CharField(max_length=3, choices=ROLE_CHOICES, default='tec')
