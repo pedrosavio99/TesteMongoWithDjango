@@ -13,7 +13,7 @@ class Todo(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='aberta')
-    assignees = models.CharField(max_length=100, blank=True)
+    assignees = models.CharField(max_length=5000, blank=True)
     assigner = models.CharField(max_length=100, blank=True)
     created_at = models.CharField(max_length=200, blank=True)
     updated_at = models.CharField(max_length=200, blank=True)
